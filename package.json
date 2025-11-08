@@ -1,0 +1,10 @@
+{
+  "name": "kool-sdk",
+  "version": "0.0.1",
+  "description": "kool sdk",
+  "main": "index.js",
+  "repository": "https://github.com/kdynamo/kool-sdk",
+  "author": "Kevin A. Downing",
+  "license": "MIT",
+  "private": true
+}
