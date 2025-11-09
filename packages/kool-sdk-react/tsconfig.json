@@ -1,0 +1,11 @@
+{
+  "files": ["./src/main.ts"],
+  "include": ["src", "lib"],
+  "references": [
+    // { "path": "./tsconfig.build.json" },
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "./dist"
+  }
+}
