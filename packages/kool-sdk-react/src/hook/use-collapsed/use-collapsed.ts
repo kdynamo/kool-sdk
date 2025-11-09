@@ -37,7 +37,7 @@ export interface UseCollapsedReturnProps extends UseCollapsedProps {
     /**
      * Toggles the content
      */
-    toggle: VoidFunction;
+    toggleCollapse: VoidFunction;
 }
 
 export const useCollapsed = (props: UseCollapsedProps): UseCollapsedReturnProps => {
@@ -67,7 +67,7 @@ export const useCollapsed = (props: UseCollapsedProps): UseCollapsedReturnProps 
     const expand = () => {
         setCollapsed(false);
     }
-    const toggle = () => {
+    const toggleCollapse = () => {
         setCollapsed(!collapsed);
     }
 
@@ -75,7 +75,7 @@ export const useCollapsed = (props: UseCollapsedProps): UseCollapsedReturnProps 
         collapsed,
         collapse,
         expand,
-        toggle,
+        toggleCollapse,
         onCollapse,
         onExpand,
     });

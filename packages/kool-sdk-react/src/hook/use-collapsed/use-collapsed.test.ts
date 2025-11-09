@@ -30,8 +30,8 @@ describe('useCollapse', () => {
         }));
         const { collapsed: initialCollapsed } = resultRef.current;
         expect(initialCollapsed).toBe(false);
-        const { toggle } = resultRef.current;
-        toggle();
+        const { toggleCollapse } = resultRef.current;
+        toggleCollapse();
         rerender();
         const { collapsed } = resultRef.current;
         expect(collapsed).toBe(true);
