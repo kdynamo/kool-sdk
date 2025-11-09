@@ -1,11 +1,26 @@
 {
-  "files": ["./src/main.ts"],
-  "include": ["src", "lib"],
+  "files": [
+    "./src/main.ts"
+  ],
+  "include": [
+    "src",
+    "lib"
+  ],
   "references": [
     // { "path": "./tsconfig.build.json" },
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      // "@/*": ["src/*"],
+      "@components": [
+        "/src/components"
+      ],
+      "@utils": [
+        "src/utility"
+      ]
+    }
   }
 }
