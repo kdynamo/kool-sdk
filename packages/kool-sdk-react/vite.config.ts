@@ -6,9 +6,10 @@ import path from 'path';
 import dts from 'vite-plugin-dts';
 import { globSync } from 'fs';
 import { fileURLToPath } from 'url';
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [react(), dts({ tsconfigPath: 'tsconfig.build.json' })],
+  plugins: [react(), dts({ tsconfigPath: 'tsconfig.build.json' }), tsconfigPaths()],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/main.ts'), // Your library's entry point
