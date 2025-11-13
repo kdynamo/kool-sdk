@@ -1,0 +1,21 @@
+@use 'sass:string';
+@use 'sass:meta';
+
+
+@function string-starts-with($str, $needle) {
+   $string: "#{$str}";
+   @if meta.type-of($string) != "string" {
+     @debug "`str-starts-with` function expecting a string for $string; #{type-of($string)} given. Value: (#{$string})";
+     @return false;
+   }
+
+
+   @if meta.type-of($needle) != "string" {
+     @debug "`str-starts-with` function expecting a string for $needle; #{type-of($needle)} given. Value: (#{$string})";
+     @return false;
+   }
+
+
+   $index: string.index($string, $needle);
+   @return ($index == 1);
+}

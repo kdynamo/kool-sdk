@@ -1,0 +1,12 @@
+@function get--separator($prefix: '', $base: '', $postfix: '', $separator: '-') {
+    $prefix--found: not is-empty($prefix);
+    $base--found: not is-empty($base);
+    $postfix--found: not is-empty($postfix);
+    @if ($prefix--found and ($base--found or $postfix--found)) {
+        $prefix: '#{$prefix}${#separator}';
+    }
+    @if ($postfix--found and ($base--found or $prefix--found)) {
+        $postfix: '${#separator}#{$postfix}';
+    }
+    @return '#{$prefix}#{$base}#{$postfix}';
+}
