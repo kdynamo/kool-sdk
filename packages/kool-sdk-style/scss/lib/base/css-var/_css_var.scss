@@ -1,0 +1,21 @@
+/////////////////////////////////////////
+/// Uses a map where the css variable is the key
+/// assigned to the value
+/// 
+/// @param $enable === true, produce the enable. === false, no css is produced.
+/// @param $element the element to apply to
+/// @param $selector the selector to apply
+/// @param $css-vars-map The map of css vars and its values
+/////////////////////////////////////////
+@mixin set--css-var--variables(
+    $css-vars--map: (),
+    $enable: true,
+    $element: ':root',
+    $selector: null,
+) {
+    @include set--content($enable: $enable, $element: $element, $selector: $selector) {
+        @each $css-var, $value in $css-vars--map {
+            #{$css-var}: #{$value};
+        }
+    } 
+}
