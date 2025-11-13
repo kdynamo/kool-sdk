@@ -1,0 +1,4 @@
+packages/*/node_modules/
+
+# sdk style
+packages/kool-sdk-style/dist
