@@ -1,0 +1,10 @@
+/////////////////////////////
+/// returns the border
+////////////////////////////
+@function get--border(
+    $color: $border-color,
+    $width: $border-width,
+    $style: $border-style,
+) {
+    @return #{width} #{$style} #{$color}; 
+}
