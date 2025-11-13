@@ -1,0 +1,37 @@
+//////////////////////////////////////
+// Appends $selector and $element
+//
+// @param $selector Child selector appended to $element
+// @param $element Child element appended to $selector
+// @param $enable === true, generate selector. === false, do not generate selector
+// @param $reverse === true, reverse order for append. === false, do not reverse order for append.
+//
+// @returns The appended selector
+//////////////////////////////////////
+@function get--selector--element(
+ $enable: true,
+ $selector: null,
+ $element: null,
+ $reverse: false
+) {
+ $return: null;
+ @if ($enable) {
+   @if ($reverse) {
+     $temp: $selector;
+     $selector: $element;
+     $element: $temp;
+   }
+   $selector-empty: is-empty($selector);
+   $element-empty: is-empty($element);
+   @if (not $selector-empty and not $element-empty) {
+     $return: selector-append($selector, $element);
+   } @else if (not $selector-empty) {
+     $return: $selector;
+   } @else if (not $element-empty) {
+     $return: $element;
+   }
+ }
+ @return $return;
+}
+
+

@@ -1,0 +1,87 @@
+
+$content--message--enable: false !default;
+////////////////////////////
+// Determines if a value is empty
+//
+// @param $value value to consider
+// @returns === true, if $value is null, an empty string or false
+////////////////////////////
+@function is-empty($value) {
+ @return (($value == null) or ($value == '') or (value == false));
+}
+
+/////////////////////////
+// Includes the content with both a selector and element when enabled
+//
+// @param $enable, === true, produce CSS. === false, do not produce CSS
+// @param $selector selector for special cases, appended directly to $element
+// @param $element selector for base selection, appended direction to $selector
+// @param $parent parent selector
+// @param $reserveChild == true, reverses $selector and $element before appending together
+// @param $childNest == true, combination of $selector and $element are children of $parent
+// @param $childAppend === true, combination of $selector and $element are appended to the $parent
+// @param $at-root === true, @at-root is used for the selector to ignore previous selector hierarchy. === false, selector uses previous hierarchy.
+// @param $append Appends additional selectors to the calculated selectors
+// @param $call brief message to display a debug message
+// @param $message: longer message to display
+// @param $message-level: Type of debug message
+// @param $enable === true, enables all debug messages. === false, disables all debug messages
+/////////////////////////
+@mixin set--content(
+ $selector: '',
+ $element: null,
+ $enable: true,
+ $reverseChild: false,
+ $parentAppend: null,
+ $childNest: true,
+ $childAppend: null,
+ $at-root: false,
+ $at-root--with: null,
+ $at-root--without: null,
+ $parent: null,
+ $append: null,
+ $call: null,
+ $message: null,
+ $message--level: info,
+ $message--enable: $content--message--enable
+) {
+ @if ($enable) {
+   $emptySelector: is-empty($selector);
+   $emptyElement: is-empty($element);
+   $emptyParent: is-empty($parent);
+   $emptyAppend: is-empty($append);
+   @if ($call or $message) {
+     @if ($message--enable) {
+       @debug (
+         '* CALL * #{$call} : #{$message} (selector: #{$selector}, element: #{$element})'
+       );
+     }
+   }
+   @if ($emptySelector and $emptyElement and $emptyParent and $emptyAppend) {
+     @content;
+   } @else {
+     $selectors: get--selector--element(
+       $enable: true,
+       $selector: $selector,
+       $element: $element,
+       $reverse: $reverseChild
+     );
+     $final-selector: get--parent--child--selector(
+       $parent: $parent,
+       $selector: $selectors,
+       $parentAppend: $parentAppend,
+       $childNest: $childNest,
+       $childAppend: $childAppend,
+       $append: $append,
+     );
+     @include set--at-root(
+       $selector: $final-selector,
+       $at-root: $at-root,
+       $with: $at-root--with,
+       $without: $at-root--without
+     ) {
+       @content;
+     }
+   }
+ }
+}
