@@ -1,0 +1,266 @@
+@use 'sass:string';
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:meta';
+
+/////////////////////////////
+/// Add all of the colors listed in $colors
+/////////////////////////////
+@mixin add--palette--colors(
+   $colors: $palette--colors
+) {
+   @each $palette in $colors {
+       @include add-colors( $palette );
+   }
+}
+////////////////////////
+// Add an individual color
+////////////////////////
+@mixin add-color(
+   $name,
+   $value,
+   $override: false
+) {
+   $color: map.get( $colors--map, $name  );
+   @if ( ( $color == null ) or $override ) {
+       $color--map: map.merge( $colors--map, ( $name: $value ) ) !global;
+   } @else if ( $color != null ) {
+       @if ( $color != $value ) {
+           @debug("* WARN * Color (#{ $name }) has already been assigned to #{ $color }, not #{ $value }");
+       }
+   }
+}
+
+@mixin add-colors(
+   $map,
+   $override: false
+) {
+   @each $name, $value in $map {
+       @include add-color(
+           $name: $name,
+           $value: $value,
+           $override: $override
+       );
+   }
+}
+
+////////////////////////////////
+/// Determines the color passed in recursively:
+/// It will return
+/// * color if a color is passed in
+/// * var(--<color>) if a css variable is passed in
+/// * value assigned to the CSS variable if var(--<var>)
+///////////////////////////////
+@function resolve--color(
+   $color
+) {
+   $type: meta.type-of($color);
+   $final: map.get( $color--map, $color );
+   @if ($final == $color) {
+       @return $final;
+   }
+   @if ($final) {
+       $final: resolve--color($final);
+   } @else {
+       @if ($type == 'color') {
+           $final: $color;
+       } @else if ( string-starts-with($color, '--')) {
+           $final: "var(#{$color})";
+       } @else if ( string-starts-with($color, 'var(')) {
+           $final: $color;
+       } @else {
+           $final: $color;
+       }
+   }
+   @return $final;
+}
+
+/////////////////////////
+// Get the specified color. If a css variable is set to
+// a color, the color can be changed. 
+/////////////////////////
+@function get--color(
+   $color,
+   $lighten: 0,
+   $saturate: 0,
+   $tint: 0,
+   $shade: 0,
+   $opacity: 1,
+   $grayscale: false,
+   $invert: false,
+   $complement: false,
+   $debug: false
+) {
+   $final: resolve--color( $color);
+   $type: meta.type-of( $final );
+
+   @if ( $type == 'color' ) {
+   } @else if ( string-starts-with($final, '--')) {
+     @debug("* WARN * Color (#{final}) is a css var");
+     @return $final;
+   } @else if ( string-starts-with($final, 'var(')) {
+       @debug("* WARN * Color (#{$final}) is a var");
+       @return $final;
+   } @else if ($final == null) {
+       @debug("* WARN * Color (#{$color}) not defined");
+       @return $color;
+   } @else {
+       @return $final;
+   }
+
+   @if ( $lighten < 0 ) {
+       $lighten: -1 * $lighten;
+       $final: darken( $final, $lighten );
+   } @else if ( $lighten > 0 ) {
+       $final: lighten( $final, $lighten );
+   }
+   @if ( $saturate < 0 ) {
+       $saturate: -1 * $saturate;
+       $final: desaturate( $final, $saturate );
+   } @else if ( $lighten > 0 ) {
+       $final: saturate( $final, $saturate );
+   }
+   @if ( $tint ) {
+       $final: tint( $final, $tint );
+   }
+   @if ( $shade ) {
+       $final: shade( $final, $shade );
+   }
+   @if ( $invert ) {
+       $final: invert( $final );
+   }
+   @if ( $complement ) {
+       $final: complement( $final );
+   }
+   @if ( $grayscale ) {
+       $final: grayscale( $final );
+   }
+   @if ( $opacity < 1 ) {
+       $final: rgba( $color, $opacity );
+   }
+   @if ($debug) {
+       @debug('get--color: #{$color}: #{$final}');
+   }
+
+
+   @return string.unquote(#{$final});
+}
+
+////////////////////////////////////////
+/// Converts a string as a variable
+////////////////////////////////////////
+ @function convertStringToColor($colors) {
+   $string: str-replace($colors, " ", "");
+   $list: str-split($string, ',');
+   $red: nth($list, 1);
+   $green: nth($list, 2);
+   $blue: nth($list, 3);
+
+   $rgb: rgb(number($red), number($green), number($blue));
+
+
+   @return $rgb;
+ }
+
+
+
+
+
+
+
+
+
+
+@function get--color--map(
+   $map: ( ),
+   $color: null,
+   $background-color: null,
+   $background-image: null,
+   $background-size: null,
+   $background-repeat: null,
+   $background-origin: null,
+   $background-clip: null,
+   $background-attachment: null,
+   $background-blend-mode: null
+) {
+   @if ( type-of( $map ) == color ) {
+       $map: ( color: $map );
+   }
+   $color--map: (
+       color: $color,
+       background-color: $background-color,
+       background-image: $background-image,
+       background-size: $background-size,
+       background-repeat: $background-repeat,
+       background-origin: $background-origin,
+       background-clip: $background-clip,
+       background-attachment: $background-attachment,
+       background-blend-mode: $background-blend-mode
+   );
+   @if ( $map != null ) {
+       $color--map: map.merge( $color--map, $map );
+   }
+   @return $color--map;
+}
+
+
+@mixin set--color(
+   $map: ( ),
+   $color: null,
+   $background-color: null,
+   $background-image: null,
+   $background-size: null,
+   $background-repeat: null,
+   $background-origin: null,
+   $background-clip: null,
+   $background-attachment: null,
+   $background-blend-mode: null
+) {
+   $color-map: get--color--map(
+       $map: $map,
+       $color: $color,
+       $background-color: $background-color,
+       $background-image: $background-image,
+       $background-size: $background-size,
+       $background-repeat: $background-repeat,
+       $background-origin: $background-origin,
+       $background-clip: $background-clip,
+       $background-attachment: $background-attachment,
+       $background-blend-mode: $background-blend-mode
+   );
+
+
+   @include set--map--attributes(
+       $map: $map,
+       $keys: (
+           color,
+           background-color,
+           background-image,
+           background-size,
+           background-repeat,
+           background-origin,
+           $background-clip,
+           $background-attachment,
+           $background-blend-mode
+       )
+   )
+
+
+}
+
+
+@mixin add-hsl-lightnesses( $colors: $colors--base) {
+    @each $color, $hue in $colors {
+        @for $i from 1 through 10 {
+            $percent: math.div($i, 10);
+            $percentClass: '00';
+            @if ($i > 0) {
+                $percentClass: $i * 10;
+            }
+            @include add-color('#{$hue}${percent}', hsl($hue, 100%, math.percentage($percent)));
+            .#{'' + $color}#{$percentClass} { color: hsl($hue, 100%, math.percentage($percent)); }
+        }
+    }
+}
+
+@include add-hsl-lightnesses();
