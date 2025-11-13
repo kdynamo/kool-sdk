@@ -1,0 +1,82 @@
+////////////////////////////////////
+// Sets @at-root using with or without rules
+//
+// @param $enable === true, generate css. === false, do not generate css
+// @param $with: === true, set with attribute. === false, set without attribute
+// @param $rule The rule to pass in. If the rule is null, it will pass through the content
+///////////////////////////////////
+@mixin set--at-root--rule($enable: true, $with: null, $rule: null) {
+  $ruleEmpty: is-empty($rule);
+  @if ($enable) {
+    @if (not $ruleEmpty) {
+      @if ($with) {
+        @at-root (with: #{$rule}) {
+          @content;
+        }
+      } @else {
+        @at-root (without: #{$rule}) {
+          @content;
+        }
+      }
+    } @else {
+      @content;
+    }
+  }
+}
+
+////////////////////////////////////
+// Sets @at-root using any combination of a selector, with or without rules.
+// NOTE: This mixin can apply @at-root using a selector, using a with and using a without in the same mixin call.
+//
+// @param $enable: === true, generate Css. === false, do not generate Css
+// @param $selector Child selector appended to $element
+// @param $element Child element appended to $selector
+// @param $reverse reverse order of $selector and $element when appending
+// @param $at-root === true, set @at-root with selector. === false, keep hierarchy.
+// @param $with rules to add to @at-root using the with input
+// @param $without rules to add to @at-root using the without input
+////////////////////////////////////
+@mixin set--at-root(
+  $enable: true,
+  $element: '',
+  $selector: '',
+  $reverse: null,
+  $at-root: false,
+  $with: null,
+  $without: null
+) {
+  $at-rootEmpty: is-empty($at-root);
+  @if ($enable) {
+    $selectors: get--selector--element(
+      $enable: true,
+      $selector: $selector,
+      $element: $element,
+      $reverse: $reverse,
+    );
+    $selectors: get--parent--child--selector(
+      $selector: $selectors,
+    );
+    $selector-empty: is-empty($selectors);
+    @include set--at-root--rule($with: true, $rule: $with) {
+      @include set--at-root--rule($with: false, $rule: $without) {
+        @if ($at-root) {
+          @if ($selector-empty) {
+            @error ('* Error *: set--at-root needs a selector with @at-root');
+          } @else {
+            @at-root #{$selectors} {
+              @content;
+            }
+          }
+        } @else {
+          @if ($selector-empty) {
+            @content;
+          } @else {
+            #{$selectors} {
+              @content;
+            }
+          }
+        }
+      }
+    }
+  }
+}

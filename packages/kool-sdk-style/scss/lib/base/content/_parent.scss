@@ -1,0 +1,78 @@
+////////////////////////////////////
+// Generates a selector list
+// @param $parent Selects the parent to the $selector
+// @param $selector Child selector appended to $element
+// @param $element Child element appended to $selector
+// @param $enable === true, generate selector. === false, do not generate selector
+// @param $reverseChild reverse order of $selector and $element when appending
+// @param $parentAppend: Appends parent to the selector.
+// @param $childNest: Children selectors are nested to parent
+// @param $childAppend: Children selectors are appended to parent
+// @param $append Appends additional selectors to the calculated selectors
+// @returns selectors based on the inputs
+////////////////////////////////////
+@function get--parent--child--selector(
+ $parent: null,
+ $selector: null,
+ $enable: true,
+ $reverseChild: false,
+ $element: null,
+ $parentAppend: null,
+ $childNest: null,
+ $childAppend: null,
+ $append: null,
+) {
+ $selectors: get--selector--element(
+   $enable: true,
+   $selector: $selector,
+   $element: $element,
+   $reverse: $reverseChild
+ );
+ $return: null;
+ $parentOnly: false;
+ $parentEmpty: is-empty($parent);
+ $selectorEmpty: is-empty($selectors);
+ $appendEmpty: is-empty($append);
+
+
+ @if ($enable) {
+   @if (not $parentEmpty and not $selectorEmpty) {
+     $appendSel: null;
+     $nestSel: null;
+     @if ($childAppend) {
+       $appendSel: selector-append($parent, $selectors);
+     }
+     @if ($childNest) {
+       $nestSel: selector-nest($parent, $selectors);
+     }
+     @if ($nestSel and $appendSel) {
+       $return: '#{$nestSel}, #{$appendSel}';
+     } @else if ($nestSel) {
+       $return: $nestSel;
+     } @else if ($appendSel) {
+       $return: $appendSel;
+     }
+   } @else if (not $parentEmpty) {
+     $parentOnly: true;
+     $return: $parent;
+   } @else if (not $selectorEmpty) {
+     $return: $selector;
+   }
+   @if ($parentAppend and not $parentEmpty and not $parentOnly) {
+     @if ($return) {
+       $return: '#{$parent}, #{$return}';
+     } @else {
+       $return: $parent;
+     }
+   }
+   @if (not $appendEmpty) {
+     @if ($return) {
+       $return: '#{$return}, #{$append}';
+     } @else {
+       $return: $append;
+     }
+   }
+ }
+ @return $return;
+}
+
