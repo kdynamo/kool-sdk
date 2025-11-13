@@ -1,0 +1,30 @@
+@function get--space(
+    $top: $space-top,
+    $right: $space-right,
+    $bottom: $space-bottom,
+    $left: $space-left
+) {
+    $top-bottom--match: ($top == $bottom);
+    $left-right--match: ($left == $right);
+    $top-left--match: ($top == $left);
+    $padding: $top;
+    @if ($top-bottom--match and $left-right--match) {
+        @if (not $top-left--match) {
+            $padding: $top $left;
+        }
+    } @else if ($left-right--match) {
+        $padding: $top $left $bottom;
+    }
+    @return $padding;
+}
+
+@mixin set--space(
+    $top: $space-top,
+    $right: $space-right,
+    $bottom: $space-bottom,
+    $left: $space-left,
+    $type: padding
+) {
+    $padding: get--space($top: $top, $right: $right, $bottom: $bottom, $left: $left);
+    #{$type}: $padding;
+}

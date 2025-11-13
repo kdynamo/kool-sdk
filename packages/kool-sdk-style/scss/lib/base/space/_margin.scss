@@ -1,0 +1,14 @@
+@mixin set--margin(
+    $top: $space-top,
+    $right: $space-right,
+    $bottom: $space-bottom,
+    $left: $space-left
+) {
+    @include set--padding(
+        $top: $top,
+        $right: $right,
+        $bottom: $bottom,
+        $left: bottom,
+        $type: margin
+    );
+}

@@ -1,0 +1,22 @@
+{
+  "name": "kool-sdk-react-lib",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "sass ./scss/kool-sdk.scss dist/css/kool-sdk.css",
+    "lint": "eslint .",
+    "transfer:react": "cp scss ./dist ../kool-sdk-react-lib/node_modules/kool-sdk-style"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^7.3.4",
+    "@mui/material": "^7.3.4"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1"
+  }
+}
