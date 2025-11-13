@@ -1,0 +1,22 @@
+
+//////////////////////////////////////////
+//  * Mixes black with the specified color
+//  * @param $color color to mix
+//  * @param $percent percentage of black to mix
+//  *
+//  * NOTE: 0% will return the same color
+//  * NOTE: 100% will return black
+//////////////////////////////////////////
+@function shade($color, $percent){
+   $final: $color;
+   @if ( type-of( $color ) != 'color' ) {
+     $final: get--color( $color );
+   }
+
+
+   @if ( type-of( $final ) != 'color' ) {
+     @debug('WARN: shade- Color #{$color} with a value of (#{$final}) is not a color. ' );
+     @return $color;
+   }
+     @return mix(black, $final, $percent);
+ }
