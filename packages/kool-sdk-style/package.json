@@ -1,22 +1,31 @@
 {
-  "name": "kool-sdk-react-lib",
+  "name": "kool-sdk-style-lib",
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "files": [
+      "dist/*.css"
+    ],
+  "main": "dist/kool-sdk.css",
   "scripts": {
-    "build": "sass ./scss/kool-sdk.scss dist/css/kool-sdk.css",
+    "build": "npm run build:font-awesome && npm run build:sass && npm run add:assets",
+    "build:sass": "sass ./scss/kool-sdk.scss dist/css/kool-sdk.css",
     "lint": "eslint .",
-    "transfer:react": "cp scss ./dist ../kool-sdk-react-lib/node_modules/kool-sdk-style"
+    "transfer:react": "cp scss ./dist ../kool-sdk-react-lib/node_modules/kool-sdk-style",
+    "build:font-awesome": "npm run copy:font-awesome && npm run rename:font-awesome && npm run rename:font-awesome:regular",
+    "copy:font-awesome": "rm -rf ./scss/lib/vendor/font-awesome/original/*; cp -rf ./node_modules/@fortawesome/fontawesome-free/ ./scss/lib/vendor/font-awesome/original",
+    "rename:font-awesome": "mv ./scss/lib/vendor/font-awesome/original/scss/fontawesome.scss ./scss/lib/vendor/font-awesome/original/scss/_fontawesome.scss",
+    "rename:font-awesome:regular": "mv ./scss/lib/vendor/font-awesome/original/scss/regular.scss ./scss/lib/vendor/font-awesome/original/scss/_regular.scss",
+    "add:assets": "npm run copy:font-awesome:webfonts && npm run copy:assets",
+    "copy:assets": "cp -rf ./copy/* ./dist",
+    "copy:font-awesome:webfonts": "mkdir -p ./copy/assets/font/font-awesome; cp -rf ./scss/lib/vendor/font-awesome/original/webfonts/* ./copy/assets/font/font-awesome/"
   },
   "dependencies": {
-    "@mui/icons-material": "^7.3.4",
-    "@mui/material": "^7.3.4"
+    "@fortawesome/fontawesome-free": "7.1.0"
   },
   "devDependencies": {
     "sass": "^1.93.2"
   },
   "peerDependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1"
   }
 }
