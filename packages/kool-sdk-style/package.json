@@ -18,7 +18,8 @@
     "rename:font-awesome:regular": "mv ./scss/lib/vendor/font-awesome/original/scss/regular.scss ./scss/lib/vendor/font-awesome/original/scss/_regular.scss",
     "add:assets": "npm run copy:font-awesome:webfonts && npm run copy:assets",
     "copy:assets": "cp -rf ./copy/* ./dist",
-    "copy:font-awesome:webfonts": "mkdir -p ./copy/assets/font/font-awesome; cp -rf ./scss/lib/vendor/font-awesome/original/webfonts/* ./copy/assets/font/font-awesome/"
+    "copy:font-awesome:webfonts": "mkdir -p ./copy/assets/font/font-awesome; cp -rf ./scss/lib/vendor/font-awesome/original/webfonts/* ./copy/assets/font/font-awesome/",
+    "deploy:react": "rm -rf ../kool-sdk-react/node_modules/kool-sdk-style; mkdir -p ../kool-sdk-react/node_modules/kool-sdk-style; cp -rf ./dist/* ../kool-sdk-react/node_modules/kool-sdk-style"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "7.1.0"

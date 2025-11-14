@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
-
+import '../node_modules/kool-sdk-style/css/kool-sdk.css';
 const preview: Preview = {
   parameters: {
     controls: {
