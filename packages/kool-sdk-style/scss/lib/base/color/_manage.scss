@@ -3,6 +3,8 @@
 @use 'sass:map';
 @use 'sass:meta';
 
+$colors--base: () !default; 
+
 /////////////////////////////
 /// Add all of the colors listed in $colors
 /////////////////////////////

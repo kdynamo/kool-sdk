@@ -1,13 +1,17 @@
+///////////////////////////////
+/// Returns the minimized space
+///////////////////////////////
 @function get--space(
     $top: $space-top,
     $right: $space-right,
     $bottom: $space-bottom,
-    $left: $space-left
+    $left: $space-left,
 ) {
+
     $top-bottom--match: ($top == $bottom);
     $left-right--match: ($left == $right);
     $top-left--match: ($top == $left);
-    $padding: $top;
+    $space: $top;
     @if ($top-bottom--match and $left-right--match) {
         @if (not $top-left--match) {
             $padding: $top $left;
@@ -15,16 +19,43 @@
     } @else if ($left-right--match) {
         $padding: $top $left $bottom;
     }
-    @return $padding;
+    @return $space;
 }
 
+///////////////////////////////
+/// Sets the padding property
+/// - if all 4 directions are provided, padding will be assigned to the values
+/// - if only part of the direction a provided, the specific padding direction 
+/// will be specified
+///////////////////////////////
 @mixin set--space(
-    $top: $space-top,
-    $right: $space-right,
-    $bottom: $space-bottom,
-    $left: $space-left,
+    $top: null,
+    $right: null,
+    $bottom: null,
+    $left: null,
     $type: padding
 ) {
-    $padding: get--space($top: $top, $right: $right, $bottom: $bottom, $left: $left);
-    #{$type}: $padding;
+    $top--empty: is-empty($top); 
+    $right--empty: is-empty($right); 
+    $bottom--empty: is-empty($bottom); 
+    $left--empty: is-empty($left); 
+
+    // if all 4 padding directions are not provided, display the individual padding directions
+    @if ($top--empty or $right--empty or $bottom--empty or $left--empty) {
+        @if (not $top--empty) {
+            #{$type}-top: $top;
+        }
+        @if (not $right--empty) {
+            #{$type}-right: $right;
+        }
+        @if (not $bottom--empty) {
+            #{$type}-bottom: $bottom;
+        }
+        @if (not $left--empty) {
+            #{$type}-left: $left;
+        }
+    } @else {
+        $space: get--space($top: $top, $right: $right, $bottom: $bottom, $left: $left);
+        #{$type}: $space;
+    }
 }
