@@ -2,9 +2,9 @@
 /// Sizes
 //////////////////////////////////////// 
 $token--size--ns: 0 !default;
-$token--size--tt: 0.0625rem !default;
-$token--size--tr: 0.125rem !default;
-$token--size--ty: 0.25rem !default;
+$token--size--tr: 0.0625rem !default;
+$token--size--ty: 0.125rem !default;
+$token--size--st: 0.25rem !default;
 $token--size--sr: 0.5rem !default;
 $token--size--sm: 0.75rem !default;
 $token--size--md: 1.0rem !default;
@@ -17,9 +17,10 @@ $token--size--ht: 4.0rem !default;
 
 $token--size--tokens: (
     --ns: $token--size--ns,
-    --tt: $token--size--tt,
     --tr: $token--size--tr,
     --ty: $token--size--ty,
+    --st: $token--size--st,
+    --sr: $token--size--sr,
     --sm: $token--size--sm,
     --md: $token--size--md,
     --lg: $token--size--lg,

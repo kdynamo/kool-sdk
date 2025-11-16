@@ -1,0 +1,23 @@
+@mixin set--button(
+    $enable: $button--enable,
+    $selector: $button--selector,
+    $element: $button--element,
+    $padding-top: $button--padding-top,
+    $padding-right: $button--padding-right,
+    $padding-bottom: $button--padding-bottom,
+    $padding-left: $button--padding-left,
+    $color: $button--color,
+    $background-color: $button--background-color,
+) {
+    // $padding: get--space($top: $padding-top, $right: $padding-right, $bottom: $padding-bottom, $left: $padding-left);
+    $padding: get--space($top:null, $right: $padding-right, $bottom: $padding-bottom, $left: $padding-left);
+
+    @include set--content($enable: $button--enable, $selector: $button--selector, $element: $button--element) {
+        color: #{$color};
+        background-color: #{$background-color};
+        column-gap: var(--sr);
+        @include set--padding($top:null, $right: $padding-right, $bottom: $padding-bottom, $left: $padding-left);
+        display: flex;
+        align-items: baseline;
+    };
+}

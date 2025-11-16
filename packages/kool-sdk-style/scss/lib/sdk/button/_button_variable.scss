@@ -1,0 +1,10 @@
+$button--enable: true !default;
+$button--selector: null !default;
+$button--element: '.#{$sdk--prefix}button' !default;
+$button--padding-top: var(--sr) !default;
+$button--padding-right: var(--sr) !default;
+$button--padding-bottom: var(--sr) !default;
+$button--padding-left: var(--sr) !default;
+$button--color: white !default;
+$button--background-color: blue !default;
+

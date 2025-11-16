@@ -1,5 +1,5 @@
 @use './original/scss/variables' with (
-      $font-path: '/assets/font/font-awesome'
+      $font-path: '../assets/font/font-awesome'
 );
 @import "./original/scss/fontawesome";
 @import "./original/scss/regular";
