@@ -4,6 +4,7 @@ import { KeyboardEvent } from "react";
 import { getCssClass } from "../../../utility/utility-css/utility-css";
 import { useUnique } from "../../../hook/use-unique/use-unique";
 
+/** Button classes */
 const buttonClassName = 'k-button';
 
 /**
@@ -47,11 +48,16 @@ export const useButton = (props: ButtonProps): ButtonProps => {
         }
     };
 
+    /**
+     * Trigger onKeyDown when provided and trigger onPress when 
+     * provided and the enter key is pressed
+     * @param e 
+     */
     const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
-       if (passedOnKeyDown) {
-        passedOnKeyDown(e);
-       }
-       onPress(e);   
+        if (passedOnKeyDown) {
+            passedOnKeyDown(e);
+        }
+        onPress(e);
     };
     return ({
         ...props,
