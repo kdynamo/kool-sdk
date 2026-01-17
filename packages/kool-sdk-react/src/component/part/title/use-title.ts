@@ -1,4 +1,4 @@
-import { getCssClass, getCssJoinClass, getCssPrefixClass, SDK_PREFIX } from "@/utility";
+import { getCssClass, getCssJoinClass, getCssPrefixClass } from "@/utility";
 import { TitleProps } from "./title-props";
 import { useUnique } from "@/hook/use-unique/use-unique";
 
