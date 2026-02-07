@@ -10,8 +10,7 @@
  * @returns === true, if empty. === false, otherwise.
  */
 export const isValueEmpty = (value: unknown) => {
-  let empty = value !== false && (!!value === false || value === '')
-
+  let empty: boolean = value !== false && (!!value === false || value === '')
   if (!empty) {
     if (Array.isArray(value)) {
       empty = value.length === 0

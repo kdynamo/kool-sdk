@@ -1,8 +1,10 @@
-import { CssConditionOrString, CssVarObject } from 'src/props/css.props'
-import { dec2hex } from '../utility-value/utility-value'
+import { CssClass, CssVarObject } from '../../props/css.props'
+import { dec2hex, isValueEmpty } from '../utility-value/utility-value'
+
+export const SDK_PREFIX = 'k-';
 
 /**
- * getHex value
+ * get hex value for color
  * @param value  can be either a number or percentage
  * @param percent === true, value is considered a percent. === false, value is decimal
  * @returns hex value
@@ -38,13 +40,13 @@ export const getColorHex = (value: number, percent: boolean = false): string => 
  *  'p-card-disabled': false
  * });
  */
-export const getCssClass = (...args: CssConditionOrString[]): string => {
+export const getCssClass = (...args: CssClass[]): string => {
   let allCssClass: string = '';
   if (args) {
-    const classes: string[] = args.flat().map((className: CssConditionOrString) => {
+    const classes: string[] = args.flat().map((className: CssClass) => {
       const type = typeof className
       let calcClass = ''
-      if (!className) {
+      if (isValueEmpty(!className)) {
         /* empty */
       } else if (type === 'string' || type === 'number') {
         calcClass = className.toString();
@@ -253,3 +255,32 @@ export const getCssArray2object = (
   })
   return returnValue
 }
+
+/**
+ * Will combine the segments with "-"
+ * @param classSegments string sections to separate by "-"
+ * @returns combined class
+ * 
+ * @example
+ * getCssPrefixClass('title', 'header'); // returns k-title-header
+ */
+export const getCssJoinClass = (...classSegments): string => {
+  const flattened = classSegments.flat(Infinity);
+  const filtered = flattened.filter((classSegment: string) => (
+    !isValueEmpty(classSegment)
+  ));
+  return (filtered.join('-'));
+}
+
+/**
+ * Will add the SDK_PREFIX and combine the segments with "-"
+ * @param classSegments string sections to separate by "-"
+ * @returns combined class
+ * 
+ * @example
+ * getCssPrefixClass('title', 'header'); // returns k-title-header
+ */
+export const getCssPrefixClass = (...classSegments): string => {
+  return `${SDK_PREFIX}${getCssJoinClass(classSegments)}`;
+}
+

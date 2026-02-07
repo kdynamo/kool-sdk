@@ -1,4 +1,4 @@
-import { getColorHex, getCssClass, getCssVar, getCssVars, getResolvedCssVar, getValidCssVar, setCssVar, setCssVars } from './utility-css'
+import { getColorHex, getCssClass, getCssVar, getCssVars, getCssPrefixClass, getResolvedCssVar, getValidCssVar, setCssVar, setCssVars } from './utility-css'
 import { getTestMockCssVar } from '../../../test/mock/css-var.test.util'
 
 describe('utility-css', () => {
@@ -95,5 +95,18 @@ describe('utility-css', () => {
 
   it('getValidCssVar CSS vars without beginning --', () => {
     expect(getValidCssVar('bg')).toBe('--bg');
+  });
+
+  it('getCssPrefixClass with string classes', () => {
+    expect(getCssPrefixClass('title', 'header')).toBe('k-title-header');
+  });
+
+  it('getCssPrefixClass remove empty strings, null and undefined', () => {
+    expect(getCssPrefixClass('', 'title', undefined, null, 'header')).toBe('k-title-header');
+  });
+
+  it('getCssPrefixClass flattens array', () => {
+    expect(getCssPrefixClass('', [undefined, 'title'], 'header')).toBe('k-title-header');
+    // expect(getCssPrefixClass('', ['title', undefined], null, 'header')).toBe('k-title-header');
   });
 })
